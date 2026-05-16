@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private Vector2 moveInput;
     private Vector2 velocity;
+    
+    public ProjectileBehaviour ProjectilePrefab;
+    public Transform LaunchOffset;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,5 +29,15 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 move = new Vector2(moveInput.x, moveInput.y);
         controller.Move(move * speed * Time.deltaTime);
+
+        transform.position += new Vector3(moveInput.x, 0, 0) * Time.deltaTime * speed;
+
+        if (!Mathf.Approximately(0, moveInput.x))
+            transform.rotation = moveInput.x > 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
+
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            Instantiate(ProjectilePrefab, LaunchOffset.position, transform.rotation);
+        }
     }
 }
