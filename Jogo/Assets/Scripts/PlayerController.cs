@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveInput;
     private Vector2 velocity;
     
+    public HealthbarBehaviour Healthbar;
+    public float Hitpoints = 5;
+    public float MaxHitpoints = 5;
     public ProjectileBehaviour ProjectilePrefab;
     public Transform LaunchOffset;
 
@@ -38,6 +41,16 @@ public class PlayerController : MonoBehaviour
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             Instantiate(ProjectilePrefab, LaunchOffset.position, transform.rotation);
+        }
+    }
+
+    public void TakeHit(float damage)
+    {
+        Hitpoints -= damage;
+        Healthbar.SetHealth(Hitpoints, MaxHitpoints);
+        if (Hitpoints <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 }

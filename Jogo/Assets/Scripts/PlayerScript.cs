@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerScript : MonoBehaviour
 {
 
     public Rigidbody2D myRigidBody;
     public float moveSpeed;
+    public ProjectileBehaviour ProjectilePrefab;
+    public Transform LaunchOffset;
     Vector2 moveDir;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -17,6 +20,15 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         InputManagment();
+
+        if (!Mathf.Approximately(0, moveSpeed))
+            transform.rotation = moveSpeed > 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
+
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            Instantiate(ProjectilePrefab, LaunchOffset.position, transform.rotation);
+        }
+
     }
 
     void FixedUpdate()
